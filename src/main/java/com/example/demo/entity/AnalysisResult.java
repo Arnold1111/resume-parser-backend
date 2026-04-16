@@ -39,9 +39,6 @@ public class AnalysisResult {
     private Integer matchingScore;
 
     @Column(columnDefinition = "TEXT")
-    private String embedding;
-
-    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "model_name")
