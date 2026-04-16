@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
+//지원자 이력서 엔티티
 @Entity
 @Table(name = "resumes")
 @Getter
@@ -16,23 +18,26 @@ public class Resume {
     @Id
     private String id;
 
-    @Column(name = "candidate_name")
+    @Column(name = "candidate_name", nullable = false, length = 50)
     private String candidateName;
 
-    @Column(name = "resume_text", columnDefinition = "TEXT")
-    private String resumeText;
+    @Column(name = "resume_text", nullable = false, columnDefinition = "TEXT")
+    private String resumeText; // 자소서 원문 텍스트 직접 저장 (파일 URL 방식 미사용)
 
-    private String status;
+    @Enumerated(EnumType.STRING) 
+    @Column(name = "status", length = 20)
+    private ResumeStatus status; // AI 분석 상태 (PENDING / DONE / FAILED)
 
-    @Column(name = "applied_at")
-    private LocalDateTime appliedAt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recruitment_status", length = 20)
+    private RecruitmentStatus recruitmentStatus;  // 전형 상태 (검토중 / 합격 / 불합격)
 
-    @Column(name = "recruitment_status")
-    private String recruitmentStatus;
-
-    // DB 컬럼명에 맞춰 job_posting_id가 아닌 job_id로 수정
+    @Column(name = "applied_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime appliedAt; // 지원 일자, 최초 생성 시 자동 입력
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
+    @JoinColumn(name = "job_posting_id")
     private JobPosting jobPosting;
 
     @ManyToOne(fetch = FetchType.LAZY)
