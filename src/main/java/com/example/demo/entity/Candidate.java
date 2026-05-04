@@ -11,8 +11,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "candidates")
-@Getter
-@Setter
 public class Candidate {
 
     @Id
@@ -31,4 +29,45 @@ public class Candidate {
     @Enumerated(EnumType.STRING)
     @Column(name = "member_type", length = 20, nullable = false)
     private MemberType memberType;
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public MemberType getMemberType() {
+		return memberType;
+	}
+
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
+
+	public String getName() {
+		return name;
+	}
 }
+

@@ -20,8 +20,6 @@ import lombok.Setter;
 //지원자 이력서 엔티티
 @Entity
 @Table(name = "resumes")
-@Getter
-@Setter
 @NoArgsConstructor
 public class Resume {
 
@@ -54,4 +52,69 @@ public class Resume {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruiter_id")
     private Recruiter recruiter;
+    
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
+    }
+
+    public void setJobPosting(JobPosting jobPosting) {
+        this.jobPosting = jobPosting;
+    }
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getResumeText() {
+		return resumeText;
+	}
+
+	public void setResumeText(String resumeText) {
+		this.resumeText = resumeText;
+	}
+
+	public ResumeStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ResumeStatus status) {
+		this.status = status;
+	}
+
+	public RecruitmentStatus getRecruitmentStatus() {
+		return recruitmentStatus;
+	}
+
+	public void setRecruitmentStatus(RecruitmentStatus recruitmentStatus) {
+		this.recruitmentStatus = recruitmentStatus;
+	}
+
+	public LocalDateTime getAppliedAt() {
+		return appliedAt;
+	}
+
+	public void setAppliedAt(LocalDateTime appliedAt) {
+		this.appliedAt = appliedAt;
+	}
+
+	public Recruiter getRecruiter() {
+		return recruiter;
+	}
+
+	public void setRecruiter(Recruiter recruiter) {
+		this.recruiter = recruiter;
+	}
+
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public JobPosting getJobPosting() {
+		return jobPosting;
+	}
 }
+
