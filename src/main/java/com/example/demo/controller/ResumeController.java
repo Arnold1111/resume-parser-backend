@@ -1,32 +1,42 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ResumeSubmitRequestDto;
+import com.example.demo.service.ResumeService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.UUID;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/resumes")
 public class ResumeController {
 
-    // [POST] /api/v1/resumes/analyze
+    private final ResumeService resumeService;
+
+    // 생성자 (서비스 연결)
+    public ResumeController(ResumeService resumeService) {
+        this.resumeService = resumeService;
+    }
+
     @PostMapping("/analyze")
     public Map<String, Object> analyzeResume(@RequestBody Map<String, Object> request) {
-        // 프론트에서 넘어오는 데이터(job_id, candidate_name, resume_text)를 받습니다.
-        // 향후 이곳에서 LLM 서버를 호출하고 비동기로 분석을 시작합니다.
-        
-        // 1. 임의의 이력서 ID 생성
         String generatedResumeId = "r_" + UUID.randomUUID().toString().substring(0, 5);
-
-        // 2. 노션 명세서와 동일한 형태의 응답 (분석 진행 중임을 알림)
         return Map.of(
                 "resume_id", generatedResumeId,
                 "status", "PENDING"
         );
+    }
+
+    // 이력서 제출용 코드 추가
+    @PostMapping("/submit")
+    public ResponseEntity<String> submitResume(@RequestBody ResumeSubmitRequestDto request) {
+        try {
+            // Service를 호출해서 DB에 저장
+            resumeService.saveResumeAndCandidate(request);
+            return ResponseEntity.ok("이력서 제출 및 DB 저장 완료");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("서버 저장 중 오류 발생");
+        }
     }
 }
